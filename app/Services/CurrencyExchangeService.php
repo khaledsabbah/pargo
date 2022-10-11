@@ -38,17 +38,31 @@ class CurrencyExchangeService
 
     }
 
+    /**
+     * @param $currency
+     * @param $startDate
+     * @param $endDate
+     * @return array
+     * @throws \App\Exceptions\ServiceNotFoundException
+     */
     public function getExchangeRateWithDateRage($currency, $startDate, $endDate)
     {
-        $currencyRates = $this->repository->getExchangeRateByDates($startDate, $endDate);
+        try {
 
-        if (!$currencyRates) {
-            $rateService = ExchangeRateFactory::Instantiate("exchange_rate");
-            $ratesResponse = $rateService->exchangeRateWithDateRage($currency, $startDate, $endDate);
-            $currencyRates = $this->repository->storeExchangeRates($ratesResponse, $currency);
+            $currencyRates = $this->repository->getExchangeRateByDates($startDate, $endDate);
+
+            if (!$currencyRates) {
+                $rateService = ExchangeRateFactory::Instantiate("exchange_rate");
+                $ratesResponse = $rateService->exchangeRateWithDateRage($currency, $startDate, $endDate);
+                $currencyRates = $this->repository->storeExchangeRates($ratesResponse, $currency);
+            }
+
+            return $this->getSpeceficCurrencyRate($currency, $currencyRates->rates);
+
+        } catch (\Exception $exception) {
+            Log::warning($exception->getMessage());
+            return redirect()->withErrors($exception->getMessage());
         }
-
-        return $this->getSpeceficCurrencyRate($currency, $currencyRates->rates);
     }
 
     private function getSpeceficCurrencyRate($currency, $rates)
