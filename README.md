@@ -1,11 +1,16 @@
 # Pargo Pre-Interview Task
 -  I've used Laravel to implement CRUD operations for Currency Exchange Rates 
 
+# Pre-Requisites
+- Create Database Names As: `pargo`
 
 # Install
 - extract the .zip file or download using `https://github.com/khaledsabbah/pargo.git`
 - `cd pargo` <small> ( go to task location )</small>
 - ` mv .env.example  .env`
+- `composer install`
+- `npm i`
+- `npm run build`
 - `chmod 755 -R storage/logs/`
 - `chmod 777 -R storage/framework/sessions/`
 - `chmod 777 -R storage/framework/views/`
